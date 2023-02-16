@@ -9,4 +9,4 @@ To display For 1.19 and more versions
 https://cf.way2muchnoise.eu/versions/For%20MC_827219_all.svg
 -->
  
- Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma creation
+ Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma Cell creation
