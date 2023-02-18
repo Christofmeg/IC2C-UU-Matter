@@ -11,7 +11,7 @@ logoFile="pack.png"
 #credits=""
 authors="Christofmeg"
 description='''
-Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma creation.
+Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma Cell creation.
 '''
 [[dependencies.ic2cuumatter]]
     modId="forge"
@@ -31,7 +31,7 @@ Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma creation.
     versionRange="[1.19.2-2.0.0,)"
     ordering="AFTER"
     side="BOTH"
-[[dependencies.justenoughprofessions]]
+[[dependencies.ic2cuumatter]]
     modId="jei"
     mandatory=true
     versionRange="[11.4.0.287,)"
