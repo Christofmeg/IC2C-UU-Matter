@@ -5,15 +5,15 @@ plugins {
 	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = '1.19.2-1.0.1'
+version = '1.12.2-1.0.0'
 group = 'com.christofmeg.${mod_name}'
 archivesBaseName = 'ic2cuumatter'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
 minecraft {
-	mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
+	mappings channel: 'snapshot', version: '20171003-1.12'
 
     runs {
         client {
@@ -67,7 +67,7 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
+	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2859'
 	
 	// CURSEMAVEN
 		// IC2 CLASSIC
