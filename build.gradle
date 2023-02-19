@@ -77,9 +77,9 @@ dependencies {
 	
 	// JEI
     if (project.hasProperty('jei_version')) {
-		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
-		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
-		runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+//		compileOnly(fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}-api"))
+//		runtimeOnly(fg.deobf("mezz.jei:jei_${minecraft_version}:${jei_version}"))
+////		compileOnly(fg.deobf("mezz.jei.jei_1.12.2:4.16.1.302"))
     }
 
 }
