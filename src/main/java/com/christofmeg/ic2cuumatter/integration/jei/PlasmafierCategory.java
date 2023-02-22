@@ -1,108 +1,120 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
-import mezz.jei.api.constants.VanillaTypes;
-import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
-import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
-import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import mezz.jei.api.helpers.IGuiHelper;
-import mezz.jei.api.recipe.IFocusGroup;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import ic2.core.platform.lang.storage.Ic2BlockLang;
+import mezz.jei.api.IGuiHelper;
+import mezz.jei.api.gui.IDrawable;
+import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
+import mezz.jei.api.gui.IGuiItemStackGroup;
+import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredients;
+import mezz.jei.api.ingredients.VanillaTypes;
+import mezz.jei.api.recipe.IRecipeCategory;
+import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import scala.actors.threadpool.Arrays;
 
 public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.PlasmafierRecipe> {
 
-	public static final RecipeType<PlasmafierRecipe> TYPE = new RecipeType<>(
-			new ResourceLocation("ic2cuumatter", "plasmafier"), PlasmafierRecipe.class);
-	public static final ResourceLocation plasmafierTexture = new ResourceLocation("ic2cuumatter",
-			"textures/gui/plasmafier.png");
+    public static String UID = "ic2cuumatter.plasmafier";
+    public static final ResourceLocation plasmafierTexture = new ResourceLocation("ic2cuumatter",
+            "textures/gui/plasmafier.png");
+    IDrawable background;
+    IDrawable press1;
+    IDrawable press2;
+    IDrawable press3;
+    IDrawable tank1;
+    IDrawable tank2;
+    IDrawable tank3;
+    IDrawable plasma;
+    IDrawable glass;
 
-	IDrawable background;
-	IDrawable icon;
-	IDrawable press1;
-	IDrawable press2;
-	IDrawable press3;
-	IDrawable tank1;
-	IDrawable tank2;
-	IDrawable tank3;
-	IDrawable plasma;
-	IDrawable glass;
+    public PlasmafierCategory(IGuiHelper helper, ItemStack itemStack, ResourceLocation texture) {
+        background = helper.createDrawable(texture, 13, 14, 132, 64);
+        press1 = helper.createDrawable(texture, 176, 41, 12, 1);
+        press2 = helper.createDrawable(texture, 176, 42, 12, 1);
+        press3 = helper.createDrawable(texture, 176, 45, 12, 1);
+        tank1 = helper.drawableBuilder(plasmafierTexture, 201, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
+        tank2 = helper.drawableBuilder(plasmafierTexture, 213, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
+        tank3 = helper.drawableBuilder(plasmafierTexture, 225, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
+        plasma = helper.drawableBuilder(texture, 176, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
+        glass = helper.createDrawable(texture, 189, 0, 12, 46);
+    }
 
-	public PlasmafierCategory(IGuiHelper helper, ResourceLocation texture, ItemLike itemStack) {
-		background = helper.createDrawable(texture, 13, 14, 132, 64);
-		icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(itemStack));
-		press1 = helper.createDrawable(texture, 176, 41, 12, 1);
-		press2 = helper.createDrawable(texture, 176, 42, 12, 1);
-		press3 = helper.createDrawable(texture, 176, 45, 12, 1);
-		tank1 = helper.drawableBuilder(plasmafierTexture, 201, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
-		tank2 = helper.drawableBuilder(plasmafierTexture, 213, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
-		tank3 = helper.drawableBuilder(plasmafierTexture, 225, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
-		plasma = helper.drawableBuilder(texture, 176, 0, 12, 41).buildAnimated(250, StartDirection.TOP, true);
-		glass = helper.createDrawable(texture, 189, 0, 12, 46);
-	}
+    @Override
+    public String getUid() {
+        return UID;
+    }
 
-	@Override
-	public RecipeType<PlasmafierRecipe> getRecipeType() {
-		return TYPE;
-	}
+    @Override
+    public String getTitle() {
+        return Ic2BlockLang.plasmafire.getLocalized();
+    }
 
-	@Override
-	public Component getTitle() {
-		return Component.translatable("block.ic2.plasmafier");
-	}
+    @Override
+    public String getModName() {
+        return "ic2cuumatter";
+    }
 
-	@Override
-	public IDrawable getBackground() {
-		return background;
-	}
+    @Override
+    public IDrawable getBackground() {
+        return background;
+    }
 
-	@Override
-	public IDrawable getIcon() {
-		return icon;
-	}
+    @Override
+    public void setRecipe(IRecipeLayout recipeLayout, PlasmafierRecipe recipeWrapper, IIngredients ingredients) {
+        IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+        guiItemStacks.init(0, true, 102, 8); // empty cell
+        guiItemStacks.init(1, true, 30, 20); // uu matter
+        guiItemStacks.init(2, false, 102, 30); // plasma cell
+        guiItemStacks.set(ingredients);
+    }
 
-	@Override
-	public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, PlasmafierRecipe recipe, IFocusGroup iFocusGroup) {
-		iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 31, 21).addIngredients(recipe.tool());
-		iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 103, 9).addIngredients(recipe.block());
-		iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 103, 31).addItemStack(recipe.output());
-	}
+    @Override
+    public void drawExtras(Minecraft minecraft) {
 
-	@SuppressWarnings("resource")
-	@Override
-	public void draw(PlasmafierRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
-			double mouseY) {
-		press1.draw(stack, 69, 45);
-		press2.draw(stack, 69, 46);
-		press2.draw(stack, 69, 47);
-		press2.draw(stack, 69, 48);
-		press3.draw(stack, 69, 49);
-		tank1.draw(stack, 69, 4);
-		tank2.draw(stack, 69, 5);
-		tank3.draw(stack, 69, 8);
-		plasma.draw(stack, 69, 9);
-		glass.draw(stack, 68, 4);
+        press1.draw(minecraft, 69, 45);
+        press2.draw(minecraft, 69, 46);
+        press2.draw(minecraft, 69, 47);
+        press2.draw(minecraft, 69, 48);
+        press3.draw(minecraft, 69, 49);
+        tank1.draw(minecraft, 69, 4);
+        tank2.draw(minecraft, 69, 5);
+        tank3.draw(minecraft, 69, 8);
+        plasma.draw(minecraft, 69, 9);
+        glass.draw(minecraft, 68, 4);
 
-		Font font = Minecraft.getInstance().font;
-		Component tierEV = Component.translatable("translation.ic2cuumatter.tier.ev");
-		font.draw(stack, tierEV, 0.0F, 0.0F, 4210752);
+        FontRenderer font = minecraft.fontRenderer;
+        String tierHV = I18n.format("translation.ic2cuumatter.tier.hv");
+        font.drawString(tierHV, 0, 0, 4210752);
 
-		Component ticks = Component.translatable("translation.ic2cuumatter.ticks");
-		font.draw(stack, ticks, 0.0F, 57.0F, 4210752);
-		font.draw(stack, Component.nullToEmpty("2,048 EU/p"), 79.0F, 57.0F, 4210752);
-	}
+        String ticks = I18n.format("translation.ic2cuumatter.ticks");
+        font.drawString(ticks, 0, 57, 4210752);
+        font.drawString(new String("512 EU/t"), 89, 57, 4210752);
 
-	record PlasmafierRecipe(Ingredient tool, Ingredient block, ItemStack output) {
-	}
+    }
+
+    public static final class PlasmafierRecipe implements IRecipeWrapper {
+
+        public ItemStack inputEmptyCell;
+        public ItemStack inputUU;
+        public ItemStack outputItem;
+
+        public PlasmafierRecipe(ItemStack emptyCellInput, ItemStack uuInput, ItemStack itemOutput) {
+            this.inputEmptyCell = emptyCellInput;
+            this.inputUU = uuInput;
+            this.outputItem = itemOutput;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public void getIngredients(IIngredients ingredients) {
+            ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(new ItemStack[] { inputEmptyCell, inputUU }));
+            ingredients.setOutput(VanillaTypes.ITEM, outputItem);
+        }
+    }
 
 }
