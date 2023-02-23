@@ -1,5 +1,7 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
+import java.util.Arrays;
+
 import ic2.core.platform.lang.storage.Ic2BlockLang;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -15,7 +17,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import scala.actors.threadpool.Arrays;
 
 public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.PlasmafierRecipe> {
 
@@ -109,7 +110,6 @@ public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.Pl
             this.outputItem = itemOutput;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public void getIngredients(IIngredients ingredients) {
             ingredients.setInputs(VanillaTypes.ITEM, Arrays.asList(new ItemStack[] { inputEmptyCell, inputUU }));
