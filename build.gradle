@@ -1,69 +1,125 @@
- buildscript {
-    repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
-    }
-    dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+plugins {
+    id 'eclipse'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
+version = '1.12.2-1.0.0'
+group = 'com.christofmeg.${mod_name}'
+archivesBaseName = 'ic2cuumatter'
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+minecraft {
+	mappings channel: 'stable', version: "${mappings_version}"
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+			property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+
+            mods {
+                ic2cuumatter {
+                    source sourceSets.main
+                }
+            }
+        }
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
 
-version = "1.12.2-1.0.0"
-group = "com.christofmeg.ic2cuumatter"
-archivesBaseName = "ic2cuumatter"
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' 
-
-minecraft {
-    version = "1.12.2-14.23.5.2838"
-	mappings = "stable_39"
-    runDir = "run"
-	
-    replace "@VERSION@", "1.0"
-    replaceIn "IC2CUUMatter.java"
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
 }
 
 repositories {
-    // JEI
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
+	maven {
+    // location of the maven that hosts JEI files
+		name = "Progwml6 maven"
+		url = "https://dvs1.progwml6.com/files/maven/"
+		content {
+            includeGroup "mezz.jei"
+        }
+	}
+	maven {
+    // location of a maven mirror for JEI files, as a fallback
+		name = "ModMaven"
+		url = "https://modmaven.dev/"
+		content {
+            includeGroup "mezz.jei"
+        }
+	}
+	maven {
+	// location of jade maven
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "modmaven.k-4u.nl"
-    }
+
 }
 
 dependencies {
+	minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2851'
+	
+	// CURSEMAVEN
+		// IC2 CLASSIC
+		if (project.hasProperty('ic2_version')) {
+			implementation fg.deobf("curse.maven:ic2_classic-242942:${ic2_version}")
+		}
+	
+	// Just Enough Items (JEI)
+    if (project.hasProperty('jei_version')) {
+		compileOnly("mezz.jei:jei_${minecraft_version}:${jei_version}:api")
+		runtimeOnly("mezz.jei:jei_${minecraft_version}:${jei_version}")
+    }
+	// Had Enough Items (HEI)
+    if (project.hasProperty('hei_version')) {
+		implementation fg.deobf("curse.maven:had-enough-items-557549:${hei_version}")
+    }
 
-	//IC2 Classic
-    compile files("dependencies/IC2Classic-1.12-1.5.6.1.jar")
+}
 
-    // JEI
-//    deobfCompile "mezz.jei:jei_1.12.2:4.16.1.301:api"
-//    runtime "mezz.jei:jei_1.12.2:4.16.1.301"
-	compile files("dependencies/jei_1.12.2-4.16.1.301.jar")
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "ic2cuumatter",
+                "Specification-Vendor"    : "Christofmeg",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "Christofmeg",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
 }
 
 processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+	exclude '.cache'
+}
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
     }
-        
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    repositories {
+        maven {
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
     }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }

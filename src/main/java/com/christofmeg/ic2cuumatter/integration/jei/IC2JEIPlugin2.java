@@ -1,7 +1,5 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
-import java.util.Arrays;
-
 import ic2.core.platform.registry.Ic2Items;
 import ic2.core.platform.registry.Ic2Resources;
 import ic2.core.platform.registry.Ic2States;
@@ -12,6 +10,8 @@ import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+
+import java.util.Arrays;
 
 @JEIPlugin
 public class IC2JEIPlugin2 implements IModPlugin {
