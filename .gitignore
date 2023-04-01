@@ -27,3 +27,5 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+src/main/java/ic2/core/block/machine/high/TileEntityPlasmafier.java
+src/main/java/ic2/core/block/machine/high/TileEntityMassFabricator.java

@@ -1,7 +1,15 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.annotation.Nonnull;
+
 import com.christofmeg.ic2cuumatter.integration.jei.category.MassFabricatorCategory;
 import com.christofmeg.ic2cuumatter.integration.jei.category.PlasmafierCategory;
+
+import ic2.core.block.machine.high.container.ContainerMassFabricator;
+import ic2.core.block.machine.high.container.ContainerPlasmafier;
 import ic2.core.inventory.gui.custom.MassFabricatorGui;
 import ic2.core.inventory.gui.custom.PlasmafierGui;
 import ic2.core.platform.registry.Ic2Items;
@@ -17,15 +25,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 @JEIPlugin
 @SideOnly(Side.CLIENT)
 public class ModJEIPlugin implements IModPlugin {
 
     @Override
-    public void register(IModRegistry registration) {
+    public void register(@Nonnull IModRegistry registration) {
 
         registration.addRecipeCatalyst(new ItemStack(Ic2States.massfabricator.getBlock(), 1, 1),
                 MassFabricatorCategory.UID);
@@ -46,11 +51,24 @@ public class ModJEIPlugin implements IModPlugin {
                 new ItemStack(Ic2Items.emptyCell.getItem()), new ItemStack(Ic2Items.uuMatter.getItem(), 10, 202),
                 new ItemStack(Ic2Items.plasmaCell.getItem(), 1, 108))), PlasmafierCategory.UID);
 
-        registration.addRecipeClickArea(MassFabricatorGui.class, 114, 39, 16, 15,
-                MassFabricatorCategory.UID);
+        registration.addRecipeClickArea(MassFabricatorGui.class, 114, 39, 16, 15, MassFabricatorCategory.UID);
 
-        registration.addRecipeClickArea(PlasmafierGui.class, 78, 14, 20, 54,
-                PlasmafierCategory.UID);
+        registration.addRecipeClickArea(PlasmafierGui.class, 78, 14, 20, 54, PlasmafierCategory.UID);
+
+        int mrecipeSlotStart = 0;
+        int mrecipeSlotCount = 1;
+        int minventorySlotStart = 0;
+        int minventorySlotCount = 38;
+        registration.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerMassFabricator.class,
+                MassFabricatorCategory.UID, mrecipeSlotStart, mrecipeSlotCount, minventorySlotStart,
+                minventorySlotCount);
+
+        int recipeSlotStart = 1;
+        int recipeSlotCount = 2;
+        int inventorySlotStart = 0;
+        int inventorySlotCount = 39;
+        registration.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerPlasmafier.class,
+                PlasmafierCategory.UID, recipeSlotStart, recipeSlotCount, inventorySlotStart, inventorySlotCount);
 
     }
 
@@ -58,8 +76,7 @@ public class ModJEIPlugin implements IModPlugin {
     public void registerCategories(IRecipeCategoryRegistration registration) {
         IGuiHelper helper = registration.getJeiHelpers().getGuiHelper();
 
-        registration.addRecipeCategories(
-                new MassFabricatorCategory(helper, Ic2Resources.massfabricator),
+        registration.addRecipeCategories(new MassFabricatorCategory(helper, Ic2Resources.massfabricator),
                 new PlasmafierCategory(helper, Ic2Items.plasmafier, Ic2Resources.plasmafire));
     }
 
