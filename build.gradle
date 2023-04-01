@@ -8,8 +8,9 @@
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'eclipse'
 
-version = "1.12.2-1.0.0"
+version = "1.12.2-1.1.0"
 group = "com.christofmeg.ic2cuumatter"
 archivesBaseName = "ic2cuumatter"
 
@@ -29,24 +30,28 @@ repositories {
     maven {
         // location of the maven that hosts JEI files
         name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
+        url = "https://dvs1.progwml6.com/files/maven"
     }
     maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "modmaven.k-4u.nl"
     }
+	maven {
+        url "https://www.cursemaven.com"
+	}
 }
 
 dependencies {
 
-	//IC2 Classic
-    compile files("dependencies/IC2Classic-1.12-1.5.6.1.jar")
+	// IC2 CLASSIC
+	compile files("dependencies/IC2Classic-1.12-1.5.7.jar")
 
     // JEI
-//    deobfCompile "mezz.jei:jei_1.12.2:4.16.1.301:api"
-//    runtime "mezz.jei:jei_1.12.2:4.16.1.301"
-	compile files("dependencies/jei_1.12.2-4.16.1.301.jar")
+	if (project.hasProperty('jei_version')) {
+		deobfCompile("mezz.jei:jei_${mc_version}:${jei_version}:api")
+		runtime("mezz.jei:jei_${mc_version}:${jei_version}")
+    }
 }
 
 processResources {

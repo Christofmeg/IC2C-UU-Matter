@@ -20,3 +20,10 @@ build
 # other
 eclipse
 run
+/.apt_generated/
+/main/
+/test/
+.factorypath
+
+# Files from Forge MDK
+forge*changelog.txt
