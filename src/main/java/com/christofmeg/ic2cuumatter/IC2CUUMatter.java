@@ -9,6 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 public class IC2CUUMatter {
     public static final String MODID = "ic2cuumatter";
     public static final String NAME = "IC2C UU-Matter";
-    public static final String VERSION = "1.0.0";
+    public static final String VERSION = "1.1.0";
 
 }

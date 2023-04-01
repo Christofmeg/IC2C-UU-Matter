@@ -1,0 +1,8 @@
+{
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.christofmeg.ic2cuumatter.integration.jei.mixin",
+  "refmap": "refmap.ic2cuumatter.json",
+  "mixins": ["GuiMassFabricatorMixin", "GuiPlasmafierMixin"],
+  "client": [],
+  "server": []
+}
