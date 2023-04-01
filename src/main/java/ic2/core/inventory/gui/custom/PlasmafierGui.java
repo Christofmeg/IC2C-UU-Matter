@@ -12,5 +12,4 @@ public class PlasmafierGui extends GuiComponentContainer {
     public PlasmafierGui(ContainerComponent inventorySlotsIn) {
         super(inventorySlotsIn);
     }
-
 }

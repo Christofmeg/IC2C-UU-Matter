@@ -57,8 +57,8 @@ public class ModJEIPlugin implements IModPlugin {
 
         int mrecipeSlotStart = 0;
         int mrecipeSlotCount = 1;
-        int minventorySlotStart = 0;
-        int minventorySlotCount = 38;
+        int minventorySlotStart = 2;
+        int minventorySlotCount = 36;
         registration.getRecipeTransferRegistry().addRecipeTransferHandler(ContainerMassFabricator.class,
                 MassFabricatorCategory.UID, mrecipeSlotStart, mrecipeSlotCount, minventorySlotStart,
                 minventorySlotCount);

@@ -12,5 +12,4 @@ public class MassFabricatorGui extends GuiComponentContainer {
     public MassFabricatorGui(ContainerComponent inventorySlotsIn) {
         super(inventorySlotsIn);
     }
-
 }
