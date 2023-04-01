@@ -1,38 +1,20 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
-import ic2.api.recipes.registries.IMachineRecipeList;
-import ic2.core.block.base.IC2ContainerBlock;
-import ic2.core.block.machines.components.ev.ColossalMachineComponent;
-import ic2.core.block.machines.components.hv.MassFabricatorComponent;
-import ic2.core.block.machines.containers.ev.ColossalMachineContainer;
 import ic2.core.block.machines.containers.ev.PlasmafierContainer;
 import ic2.core.block.machines.containers.hv.MassFabricatorContainer;
-import ic2.core.block.machines.tiles.hv.MassFabricatorTileEntity;
-import ic2.core.inventory.container.ContainerComponent;
-import ic2.core.inventory.container.IC2Container;
-import ic2.core.inventory.gui.ComponentContainerScreen;
 import ic2.core.inventory.gui.IC2Screen;
 import ic2.core.platform.registries.IC2Blocks;
 import ic2.core.platform.registries.IC2Items;
-import ic2.core.utils.collection.CollectionUtils;
-import ic2.jeiplugin.core.IC2GuiHandler;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.gui.handlers.IGuiClickableArea;
-import mezz.jei.api.recipe.RecipeType;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+
+import java.util.Arrays;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -82,6 +64,23 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         registration.addGuiContainerHandler(IC2Screen.class, new GuiClickableArea());
+    }
+
+    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        int mrecipeSlotStart = 0;
+        int mrecipeSlotCount = 1;
+        int minventorySlotStart = 2;
+        int minventorySlotCount = 41;
+        registration.addRecipeTransferHandler(MassFabricatorContainer.class, null,
+                MassFabricatorCategory.TYPE, mrecipeSlotStart, mrecipeSlotCount, minventorySlotStart,
+                minventorySlotCount);
+
+        int recipeSlotStart = 0;
+        int recipeSlotCount = 2;
+        int inventorySlotStart = 2;
+        int inventorySlotCount = 42;
+        registration.addRecipeTransferHandler(PlasmafierContainer.class, null,
+                PlasmafierCategory.TYPE, recipeSlotStart, recipeSlotCount, inventorySlotStart, inventorySlotCount);
     }
 
 }

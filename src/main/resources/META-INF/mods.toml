@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/Christofmeg/IC2C-UU-Matter/issues" #optional
 license="MIT License https://github.com/Christofmeg/IC2C-UU-Matter/blob/1.19.2/LICENSE"
 [[mods]]
 modId="ic2cuumatter"
-version="1.19.2-1.1.0"
+version="1.19.2-1.2.0"
 displayName="IC2C UU-Matter"
 displayURL="https://github.com/Christofmeg/IC2C-UU-Matter" #optional
 logoFile="pack.png"
