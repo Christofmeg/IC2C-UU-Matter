@@ -38,7 +38,7 @@ public class ModJEIPlugin implements IModPlugin {
 
         registration.addRecipes(Arrays.asList(
                 new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Items.AIR),
-                        new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), "0"),
+                        new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), null),
                 new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Ic2Items.scrap.getItem(), 1, 200),
                         new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), "5,000"),
                 new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Ic2Items.scrapBox.getItem()),

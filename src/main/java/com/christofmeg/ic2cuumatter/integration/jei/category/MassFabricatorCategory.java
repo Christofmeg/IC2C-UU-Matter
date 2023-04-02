@@ -2,6 +2,7 @@ package com.christofmeg.ic2cuumatter.integration.jei.category;
 
 import javax.annotation.Nullable;
 
+import ic2.api.classic.recipe.machine.IMachineRecipeList.RecipeEntry;
 import ic2.core.platform.lang.storage.Ic2BlockLang;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -16,8 +17,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-
-import java.util.Objects;
 
 public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCategory.MassFabricatorRecipe> {
 
@@ -62,30 +61,7 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
 
     @Override
     public void drawExtras(Minecraft minecraft) {
-
         background_fix.draw(minecraft, 125, 0);
-
-        FontRenderer font = minecraft.fontRenderer;
-        String tierHV = I18n.format("translation.ic2cuumatter.tier.hv");
-        font.drawString(tierHV, 0, 0, 4210752);
-
-        String energy = I18n.format("translation.ic2cuumatter.energy");
-        font.drawString(energy, 0, 52, 4210752);
-
-        font.drawString("7,000,000 EU", 0, 62, 4210752);
-        font.drawString("512 EU/t", 90, 62, 4210752);
-
-        if (!Objects.equals(recipe.getEnergy(), "0")) {
-            String amplifier = I18n.format("translation.ic2cuumatter.amplifier");
-            font.drawString(amplifier, 90, 21, 4210752);
-            if (Objects.equals(recipe.getEnergy(), "100,000")) {
-                font.drawString(I18n.format("+ " + recipe.getEnergy()), 86, 31, 4210752);
-            } else if (Objects.equals(recipe.getEnergy(), "45,000")) {
-                font.drawString(I18n.format("+ " + recipe.getEnergy()), 92, 31, 4210752);
-            } else {
-                font.drawString(I18n.format("+ " + recipe.getEnergy()), 98, 31, 4210752);
-            }
-        }
     }
 
     public static final class MassFabricatorRecipe implements IRecipeWrapper {
@@ -93,6 +69,7 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
         public String energy;
         public ItemStack inputItem;
         public ItemStack outputItem;
+        RecipeEntry entry;
 
         public MassFabricatorRecipe(ItemStack itemInput, ItemStack itemOutput, @Nullable String energyRequired) {
             this.energy = energyRequired;
@@ -108,6 +85,33 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
         public void getIngredients(IIngredients ingredients) {
             ingredients.setOutput(VanillaTypes.ITEM, outputItem);
             ingredients.setInput(VanillaTypes.ITEM, inputItem);
+        }
+
+        @Override
+        public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+
+            FontRenderer font = minecraft.fontRenderer;
+            String tierHV = I18n.format("translation.ic2cuumatter.tier.hv");
+            font.drawString(tierHV, 0, 0, 4210752);
+
+            String energy = I18n.format("translation.ic2cuumatter.energy");
+            font.drawString(energy, 0, 52, 4210752);
+            font.drawString("7,000,000 EU", 0, 62, 4210752);
+            font.drawString("512 EU/t", 90, 62, 4210752);
+
+            if (getEnergy() != null) {
+                String amplifier = I18n.format("translation.ic2cuumatter.amplifier");
+                font.drawString(amplifier, 90, 21, 4210752);
+                if (getEnergy() == "100,000") {
+                    font.drawString(I18n.format("+ " + getEnergy()), 86, 31, 4210752);
+                }
+                if (getEnergy() == "45,000") {
+                    font.drawString(I18n.format("+ " + getEnergy()), 92, 31, 4210752);
+                }
+                if (getEnergy() == "5,000") {
+                    font.drawString(I18n.format("+ " + getEnergy()), 98, 31, 4210752);
+                }
+            }
         }
     }
 
