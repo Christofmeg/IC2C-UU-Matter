@@ -41,7 +41,7 @@ repositories {
 dependencies {
 
 	//IC2 Classic
-	compile files("dependencies/IC2Classic-1.12-1.5.7.jar")
+	compile files("dependencies/IC2Classic-1.12-1.5.8.jar")
 
     // JEI
 	compile files("dependencies/jei_1.12.2-4.16.1.301.jar")
