@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import com.christofmeg.ic2cuumatter.integration.jei.category.MassFabricatorCategory;
 import com.christofmeg.ic2cuumatter.integration.jei.category.PlasmafierCategory;
 
+import ic2.core.IC2;
 import ic2.core.block.machine.high.container.ContainerMassFabricator;
 import ic2.core.block.machine.high.container.ContainerPlasmafier;
 import ic2.core.inventory.gui.custom.MassFabricatorGui;
@@ -36,9 +37,16 @@ public class ModJEIPlugin implements IModPlugin {
                 MassFabricatorCategory.UID);
         registration.addRecipeCatalyst(new ItemStack(Ic2States.plasmafier.getBlock(), 1, 5), PlasmafierCategory.UID);
 
+        if (IC2.config.isLoaded() && IC2.config.getConfig().getCategory("balance").getValues().get("UUNeedsScrap")
+                .getBoolean() == false) {
+            registration
+                    .addRecipes(
+                            Arrays.asList(new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Items.AIR),
+                                    new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), null)),
+                            MassFabricatorCategory.UID);
+        }
+
         registration.addRecipes(Arrays.asList(
-                new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Items.AIR),
-                        new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), null),
                 new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Ic2Items.scrap.getItem(), 1, 200),
                         new ItemStack(Ic2Items.uuMatter.getItem(), 1, 202), "5,000"),
                 new MassFabricatorCategory.MassFabricatorRecipe(new ItemStack(Ic2Items.scrapBox.getItem()),

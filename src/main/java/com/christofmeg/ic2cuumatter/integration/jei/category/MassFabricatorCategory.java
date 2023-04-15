@@ -3,6 +3,7 @@ package com.christofmeg.ic2cuumatter.integration.jei.category;
 import javax.annotation.Nullable;
 
 import ic2.api.classic.recipe.machine.IMachineRecipeList.RecipeEntry;
+import ic2.core.IC2;
 import ic2.core.platform.lang.storage.Ic2BlockLang;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawable;
@@ -66,19 +67,15 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
 
     public static final class MassFabricatorRecipe implements IRecipeWrapper {
 
-        public String energy;
+        public String amplifierValue;
         public ItemStack inputItem;
         public ItemStack outputItem;
         RecipeEntry entry;
 
-        public MassFabricatorRecipe(ItemStack itemInput, ItemStack itemOutput, @Nullable String energyRequired) {
-            this.energy = energyRequired;
+        public MassFabricatorRecipe(ItemStack itemInput, ItemStack itemOutput, @Nullable String amplifierValue) {
+            this.amplifierValue = amplifierValue;
             this.inputItem = itemInput;
             this.outputItem = itemOutput;
-        }
-
-        public String getEnergy() {
-            return energy;
         }
 
         @Override
@@ -96,21 +93,31 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
 
             String energy = I18n.format("translation.ic2cuumatter.energy");
             font.drawString(energy, 0, 52, 4210752);
-            font.drawString("7,000,000 EU", 0, 62, 4210752);
+
             font.drawString("512 EU/t", 90, 62, 4210752);
 
-            if (getEnergy() != null) {
+            double euScrap = Double.parseDouble(
+                    "" + IC2.config.getConfig().getCategory("balance").getValues().get("EUPerUU").getDouble()
+                            * (7000000 / 6));
+            double euNoScrap = Double.parseDouble(""
+                    + IC2.config.getConfig().getCategory("balance").getValues().get("EUPerUU").getDouble() * 7000000);
+
+            if (amplifierValue != null) {
                 String amplifier = I18n.format("translation.ic2cuumatter.amplifier");
                 font.drawString(amplifier, 90, 21, 4210752);
-                if (getEnergy() == "100,000") {
-                    font.drawString(I18n.format("+ " + getEnergy()), 86, 31, 4210752);
+                if (amplifierValue == "100,000") {
+                    font.drawString(I18n.format("+ " + amplifierValue), 86, 31, 4210752);
                 }
-                if (getEnergy() == "45,000") {
-                    font.drawString(I18n.format("+ " + getEnergy()), 92, 31, 4210752);
+                if (amplifierValue == "45,000") {
+                    font.drawString(I18n.format("+ " + amplifierValue), 92, 31, 4210752);
                 }
-                if (getEnergy() == "5,000") {
-                    font.drawString(I18n.format("+ " + getEnergy()), 98, 31, 4210752);
+                if (amplifierValue == "5,000") {
+                    font.drawString(I18n.format("+ " + amplifierValue), 98, 31, 4210752);
                 }
+                font.drawString(String.format("%,.0f", euScrap) + " EU", 0, 62, 4210752);
+
+            } else {
+                font.drawString(String.format("%,.0f", euNoScrap) + " EU", 0, 62, 4210752);
             }
         }
     }
