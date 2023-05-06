@@ -5,7 +5,7 @@ plugins {
 	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = '1.19.2-1.2.0'
+version = '1.19.2-1.2.1'
 group = 'com.christofmeg.${mod_name}'
 archivesBaseName = 'ic2cuumatter'
 
@@ -57,7 +57,6 @@ repositories {
         }
 	}
 	maven {
-	// location of jade maven
         url "https://www.cursemaven.com"
         content {
             includeGroup "curse.maven"
@@ -80,6 +79,14 @@ dependencies {
 		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
 		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
 		runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
+    }
+    // CONFIGURED
+    if (project.hasProperty('configured_version')) {
+        implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
+    }
+    // CATALOGUE
+    if (project.hasProperty('catalogue_version')) {
+        implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
     }
 
 }

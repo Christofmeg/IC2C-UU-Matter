@@ -4,7 +4,7 @@ issueTrackerURL="https://github.com/Christofmeg/IC2C-UU-Matter/issues" #optional
 license="MIT License https://github.com/Christofmeg/IC2C-UU-Matter/blob/1.19.2/LICENSE"
 [[mods]]
 modId="ic2cuumatter"
-version="1.19.2-1.2.0"
+version="1.19.2-1.2.1"
 displayName="IC2C UU-Matter"
 displayURL="https://github.com/Christofmeg/IC2C-UU-Matter" #optional
 logoFile="pack.png"
@@ -37,3 +37,5 @@ Addon for IC2-Classic adding JEI pages for UU-Matter and Plasma Cell creation.
     versionRange="[11.4.0.287,)"
     ordering="NONE"
     side="BOTH"
+[modproperties.ic2cuumatter]
+    catalogueImageIcon="ic2cuumatter-icon.png"
