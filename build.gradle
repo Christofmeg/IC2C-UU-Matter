@@ -5,7 +5,7 @@ plugins {
 	id 'org.parchmentmc.librarian.forgegradle' version '1.+'
 }
 
-version = '1.19.2-1.2.1'
+version = "${project.minecraft_version}-${project.version}"
 group = 'com.christofmeg.${mod_name}'
 archivesBaseName = 'ic2cuumatter'
 
@@ -66,28 +66,34 @@ repositories {
 }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
-	
-	// CURSEMAVEN
-		// IC2 CLASSIC
-		if (project.hasProperty('ic2_version')) {
-			implementation fg.deobf("curse.maven:ic2_classic-242942:${ic2_version}")
-		}
-	
+	minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+
+    // IC2 CLASSIC
+    if (project.hasProperty('ic2_version')) {
+        implementation fg.deobf("curse.maven:ic2_classic-242942:${ic2_version}")
+    }
 	// JEI
     if (project.hasProperty('jei_version')) {
 		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
 		compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
 		runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
     }
-    // CONFIGURED
-    if (project.hasProperty('configured_version')) {
-        implementation fg.deobf("curse.maven:configured-457570:${configured_version}")
-    }
     // CATALOGUE
     if (project.hasProperty('catalogue_version')) {
         implementation fg.deobf("curse.maven:catalogue-459701:${catalogue_version}")
     }
+    // REI
+    if (project.hasProperty('rei_version')) {
+        compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:11.+"))
+        compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:11.+"))
+
+        implementation fg.deobf("curse.maven:roughly-enough-items-310111:${rei_version}")
+
+        runtimeOnly fg.deobf("curse.maven:roughly-enough-items-hacks-521393:${rei_hacks_version}")
+        runtimeOnly fg.deobf("curse.maven:cloth-config-348521:${cloth_config_version}")
+        runtimeOnly fg.deobf("curse.maven:architectury-api-419699:${architectury_version}")
+    }
+
 
 }
 

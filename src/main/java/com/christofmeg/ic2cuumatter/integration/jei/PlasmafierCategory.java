@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import org.jetbrains.annotations.NotNull;
 
 public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.PlasmafierRecipe> {
 
@@ -26,6 +27,9 @@ public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.Pl
             new ResourceLocation("ic2cuumatter", "plasmafier"), PlasmafierRecipe.class);
     public static final ResourceLocation plasmafierTexture = new ResourceLocation("ic2cuumatter",
             "textures/gui/plasmafier.png");
+
+    public static final ResourceLocation slotVanilla = new ResourceLocation("jei",
+            "textures/gui/slot.png");
 
     IDrawable background;
     IDrawable icon;
@@ -37,10 +41,27 @@ public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.Pl
     IDrawable tank3;
     IDrawable plasma;
     IDrawable glass;
+    IDrawable slot;
+    IDrawable frame;
+    IDrawable frameBottom;
+    IDrawable frameTop;
+
+    int input1X = 31;
+    int input1Y = 21;
+    int input2X = 103;
+    int input2Y = 9;
+    int outputX = 103;
+    int outputY = 31;
 
     public PlasmafierCategory(IGuiHelper helper, ResourceLocation texture, ItemLike itemStack) {
-        background = helper.createDrawable(texture, 13, 14, 132, 64);
+        background = helper.createBlankDrawable(132, 64);
         icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(itemStack));
+        slot = helper.drawableBuilder(slotVanilla, 0, 0, 18, 18).setTextureSize(18, 18).build();
+
+        frame = helper.drawableBuilder(texture, 78, 15, 20, 52).build();
+        frameBottom = helper.drawableBuilder(texture, 79, 67, 18, 1).build();
+        frameTop = helper.drawableBuilder(texture, 79, 14, 18, 1).build();
+
         press1 = helper.createDrawable(texture, 176, 41, 12, 1);
         press2 = helper.createDrawable(texture, 176, 42, 12, 1);
         press3 = helper.createDrawable(texture, 176, 45, 12, 1);
@@ -52,36 +73,43 @@ public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.Pl
     }
 
     @Override
-    public RecipeType<PlasmafierRecipe> getRecipeType() {
+    public @NotNull RecipeType<PlasmafierRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return Component.translatable("block.ic2.plasmafier");
     }
 
     @Override
-    public IDrawable getBackground() {
+    public @NotNull IDrawable getBackground() {
         return background;
     }
 
     @Override
-    public IDrawable getIcon() {
+    public @NotNull IDrawable getIcon() {
         return icon;
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, PlasmafierRecipe recipe, IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 31, 21).addIngredients(recipe.tool());
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 103, 9).addIngredients(recipe.block());
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 103, 31).addItemStack(recipe.output());
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, PlasmafierRecipe recipe, @NotNull IFocusGroup iFocusGroup) {
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, input1X, input1Y).addIngredients(recipe.tool());
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, input2X, input2Y).addIngredients(recipe.block());
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, outputX, outputY).addItemStack(recipe.output());
     }
 
-    @SuppressWarnings("resource")
     @Override
-    public void draw(PlasmafierRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX,
-            double mouseY) {
+    public void draw(@NotNull PlasmafierRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX,
+                     double mouseY) {
+        slot.draw(stack, input1X - 1, input1Y - 1);
+        slot.draw(stack, input2X - 1, input2Y - 1);
+        slot.draw(stack, outputX - 1, outputY - 1);
+
+        frame.draw(stack, 65, 1);
+        frameBottom.draw(stack, 66, 53);
+        frameTop.draw(stack, 66, 0);
+
         press1.draw(stack, 69, 45);
         press2.draw(stack, 69, 46);
         press2.draw(stack, 69, 47);
@@ -94,11 +122,14 @@ public class PlasmafierCategory implements IRecipeCategory<PlasmafierCategory.Pl
         glass.draw(stack, 68, 4);
 
         Font font = Minecraft.getInstance().font;
-        Component tierEV = Component.translatable("translation.ic2cuumatter.tier.ev");
+        Component tier = Component.translatable("translation.ic2cuumatter.tier");
+        Component EV = Component.translatable("translation.ic2cuumatter.tier.ev");
+        Component tierEV = Component.translatable("translation.ic2cuumatter.format2", tier, EV);
         font.draw(stack, tierEV, 0.0F, 0.0F, 4210752);
 
         Component ticks = Component.translatable("translation.ic2cuumatter.ticks");
-        font.draw(stack, ticks, 0.0F, 57.0F, 4210752);
+        Component ticksFormat = Component.translatable("translation.ic2cuumatter.format2", ticks, "2,500");
+        font.draw(stack, ticksFormat, 0.0F, 57.0F, 4210752);
         font.draw(stack, Component.nullToEmpty("2,048 EU/p"), 79.0F, 57.0F, 4210752);
     }
 

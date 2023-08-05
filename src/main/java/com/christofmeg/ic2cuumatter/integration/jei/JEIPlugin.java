@@ -9,26 +9,26 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.List;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return new ResourceLocation("ic2cuumatter", "jei_plugin");
     }
 
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
         registration.addRecipeCategories(
-                new MassFabricatorCategory(registration.getJeiHelpers().getGuiHelper(), MassFabricatorContainer.TEXTURE,
-                        IC2Blocks.MASS_FABRICATOR),
+                new MassFabricatorCategory(registration.getJeiHelpers().getGuiHelper(), IC2Blocks.MASS_FABRICATOR),
                 new PlasmafierCategory(registration.getJeiHelpers().getGuiHelper(), PlasmafierContainer.TEXTURE,
                         IC2Blocks.PLASMAFIER));
     }
@@ -50,7 +50,7 @@ public class JEIPlugin implements IModPlugin {
                         new ItemStack(IC2Items.UUMATTER), "100,000")));
 
         registration.addRecipes(PlasmafierCategory.TYPE,
-                Arrays.asList(
+                List.of(
                         new PlasmafierCategory.PlasmafierRecipe(Ingredient.of(new ItemStack(IC2Items.UUMATTER, 10)),
                                 Ingredient.of(IC2Items.CELL_EMPTY), new ItemStack(IC2Items.CELL_PLASMA))));
     }
