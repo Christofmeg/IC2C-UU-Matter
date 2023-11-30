@@ -108,7 +108,7 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
 
     }
 
-    static class MassFabRecipe {
+    public static class MassFabRecipe {
         ItemStack INPUT;
         int AMPLIFIER;
 
