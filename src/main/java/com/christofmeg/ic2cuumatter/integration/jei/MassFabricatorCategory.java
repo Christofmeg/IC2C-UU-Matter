@@ -1,7 +1,9 @@
 package com.christofmeg.ic2cuumatter.integration.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-
+import ic2.core.IC2;
+import ic2.core.platform.registries.IC2Blocks;
+import ic2.core.platform.registries.IC2Items;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -16,16 +18,19 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCategory.MassFabricatorRecipe> {
+public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCategory.MassFabRecipe> {
 
-    public static final RecipeType<MassFabricatorRecipe> TYPE = new RecipeType<>(
-            new ResourceLocation("ic2cuumatter", "mass_fabricator"), MassFabricatorRecipe.class);
+    public static final RecipeType<MassFabRecipe> TYPE = new RecipeType<>(
+            new ResourceLocation("ic2cuumatter", "mass_fabricator"), MassFabRecipe.class);
 
     public static final ResourceLocation slotVanilla = new ResourceLocation("jei",
             "textures/gui/slot.png");
@@ -45,13 +50,13 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
     }
 
     @Override
-    public @NotNull RecipeType<MassFabricatorRecipe> getRecipeType() {
+    public @NotNull RecipeType<MassFabRecipe> getRecipeType() {
         return TYPE;
     }
 
     @Override
     public @NotNull Component getTitle() {
-        return Component.translatable("block.ic2.mass_fabricator");
+        return IC2Blocks.MASS_FABRICATOR.getName();
     }
 
     @Override
@@ -65,15 +70,13 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MassFabricatorRecipe recipe,
-                          @NotNull IFocusGroup iFocusGroup) {
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 67, 42).addIngredients(recipe.item());
-        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 67, 5).addItemStack(recipe.output());
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MassFabRecipe recipe, @NotNull IFocusGroup iFocusGroup) {
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 67, 42).addItemStack(recipe.getInput());
+        iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 67, 5).addItemStack(IC2Items.UUMATTER.getDefaultInstance());
     }
 
     @Override
-    public void draw(MassFabricatorRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX,
-                     double mouseY) {
+    public void draw(MassFabRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
 
         slot.draw(stack, 66, 41);
         bigSlot.draw(stack, 62, 0);
@@ -88,27 +91,46 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
         Component energyFormat = Component.translatable("translation.ic2cuumatter.format1", energy);
         font.draw(stack, energyFormat, 0.0F, 52.0F, 4210752);
 
-        font.draw(stack, Component.nullToEmpty("7,000,000 EU"), 0.0F, 62.0F, 4210752);
-        font.draw(stack, Component.nullToEmpty("512 EU/p"), 88.0F, 62.0F, 4210752);
+        DecimalFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.ROOT));
+        int reqEnergy = 7000000;
 
-        if (!Objects.equals(recipe.getEnergy(), "0")) {
+        font.draw(stack, Component.literal((recipe.getAmp() > 0 ? ("~" + formatter.format(reqEnergy / 7)) : formatter.format(reqEnergy)) + "EU"), 0.0F, 62.0F, 4210752);
+        font.draw(stack, Component.literal("512 EU/p"), 88.0F, 62.0F, 4210752);
+
+        if (recipe.getAmp() > 0) {
             Component amplifier = Component.translatable("translation.ic2cuumatter.amplifier");
             Component amplifierFormat = Component.translatable("translation.ic2cuumatter.format1", amplifier);
             font.draw(stack, amplifierFormat, 90.0F, 20.0F, 4210752);
-            if (Objects.equals(recipe.getEnergy(), "100,000")) {
-                font.draw(stack, Component.nullToEmpty("+ " + recipe.getEnergy()), 86.0F, 30.0F, 4210752);
-            } else if (Objects.equals(recipe.getEnergy(), "45,000")) {
-                font.draw(stack, Component.nullToEmpty("+ " + recipe.getEnergy()), 92.0F, 30.0F, 4210752);
-            } else {
-                font.draw(stack, Component.nullToEmpty("+ " + recipe.getEnergy()), 98.0F, 30.0F, 4210752);
-            }
+
+            font.draw(stack, Component.literal("+ " + recipe.getAmp()), 86.0F, 30.0F, 4210752);
         }
+
+
     }
 
-    record MassFabricatorRecipe(Ingredient item, ItemStack output, String energy) {
-        public String getEnergy() {
-            return energy;
+    public static class MassFabRecipe {
+        ItemStack INPUT;
+        int AMPLIFIER;
+
+        public MassFabRecipe(ItemStack stack, int amp) {
+            this.INPUT = stack;
+            this.AMPLIFIER = amp;
+        }
+
+        public ItemStack getInput() {
+            return this.INPUT;
+        }
+
+        public int getAmp() {
+            return AMPLIFIER;
+        }
+
+        public static List<MassFabRecipe> getMassFabRecipes() {
+            List<MassFabRecipe> recipes = new ArrayList<>();
+            recipes.add(new MassFabRecipe(ItemStack.EMPTY, 0));
+            IC2.RECIPES.get(false).massFabricator.getAllEntries().forEach(entry -> recipes.add(new MassFabRecipe(entry.getInputs()[0].getComponents().get(0),
+                    entry.getOutput().getMetadata().getInt("Amplifier"))));
+            return recipes;
         }
     }
-
 }

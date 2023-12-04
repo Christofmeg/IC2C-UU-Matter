@@ -34,8 +34,7 @@ public class GuiClickableArea implements IGuiContainerHandler<IC2Screen> {
                         int posX = 80;
                         int posY = 40;
                         areas.add(IGuiClickableArea.createBasic(posX, posY, width, height, MassFabricatorCategory.TYPE));
-                    }
-                    else if (comp instanceof PlasmafierContainer) {
+                    } else if (comp instanceof PlasmafierContainer) {
                         int width = 20;
                         int height = 54;
                         int posX = 78;

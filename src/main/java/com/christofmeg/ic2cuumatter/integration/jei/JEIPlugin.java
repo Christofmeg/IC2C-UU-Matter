@@ -10,11 +10,9 @@ import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 @JeiPlugin
@@ -35,23 +33,10 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(MassFabricatorCategory.TYPE, Arrays.asList(
-
-                new MassFabricatorCategory.MassFabricatorRecipe(Ingredient.of(new ItemStack(Items.AIR)),
-                        new ItemStack(IC2Items.UUMATTER), "0"),
-
-                new MassFabricatorCategory.MassFabricatorRecipe(Ingredient.of(new ItemStack(IC2Items.SCRAP)),
-                        new ItemStack(IC2Items.UUMATTER), "1,000"),
-
-                new MassFabricatorCategory.MassFabricatorRecipe(Ingredient.of(new ItemStack(IC2Items.SCRAPBOX)),
-                        new ItemStack(IC2Items.UUMATTER), "45,000"),
-
-                new MassFabricatorCategory.MassFabricatorRecipe(Ingredient.of(new ItemStack(IC2Items.SCRAP_METAL)),
-                        new ItemStack(IC2Items.UUMATTER), "100,000")));
+        registration.addRecipes(MassFabricatorCategory.TYPE, MassFabricatorCategory.MassFabRecipe.getMassFabRecipes());
 
         registration.addRecipes(PlasmafierCategory.TYPE,
-                List.of(
-                        new PlasmafierCategory.PlasmafierRecipe(Ingredient.of(new ItemStack(IC2Items.UUMATTER, 10)),
+                List.of(new PlasmafierCategory.PlasmafierRecipe(Ingredient.of(new ItemStack(IC2Items.UUMATTER, 10)),
                                 Ingredient.of(IC2Items.CELL_EMPTY), new ItemStack(IC2Items.CELL_PLASMA))));
     }
 
