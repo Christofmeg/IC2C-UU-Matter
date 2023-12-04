@@ -157,8 +157,6 @@ if (project.hasProperty('modrinth_id')) {
             optional.project("roughly-enough-items-hacks")
             optional.project("rei")
             optional.project("jei")
-            incompatible.project("industrial-craft")
-            incompatible.project("ic2xuumatter")
         }
     }
 }
