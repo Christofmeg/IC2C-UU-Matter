@@ -94,7 +94,7 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
         DecimalFormat formatter = new DecimalFormat("#,###", new DecimalFormatSymbols(Locale.ROOT));
         int reqEnergy = 7000000;
 
-        font.draw(stack, Component.literal((recipe.getAmp() > 0 ? ("~" + formatter.format(reqEnergy / 7)) : formatter.format(reqEnergy)) + "EU"), 0.0F, 62.0F, 4210752);
+        font.draw(stack, Component.literal((recipe.getAmp() > 0 ? (formatter.format(reqEnergy / 6)) : formatter.format(reqEnergy)) + " EU"), 0.0F, 62.0F, 4210752);
         font.draw(stack, Component.literal("512 EU/p"), 88.0F, 62.0F, 4210752);
 
         if (recipe.getAmp() > 0) {
@@ -102,9 +102,8 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
             Component amplifierFormat = Component.translatable("translation.ic2cuumatter.format1", amplifier);
             font.draw(stack, amplifierFormat, 90.0F, 20.0F, 4210752);
 
-            font.draw(stack, Component.literal("+ " + recipe.getAmp()), 86.0F, 30.0F, 4210752);
+            font.draw(stack, Component.literal("+ " + formatter.format(recipe.getAmp())), 86.0F, 30.0F, 4210752);
         }
-
 
     }
 
