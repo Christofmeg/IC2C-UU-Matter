@@ -1,0 +1,10 @@
+{
+  "translation.ic2cuumatter.amplifier": "Підсилення",
+  "translation.ic2cuumatter.energy": "Затрати енергії",
+  "translation.ic2cuumatter.tier": "Рівень",
+  "translation.ic2cuumatter.tier.hv": "ВН",
+  "translation.ic2cuumatter.tier.ev": "ЕН",
+  "translation.ic2cuumatter.ticks": "Тіків",
+  "translation.ic2cuumatter.format1": "%s: ",
+  "translation.ic2cuumatter.format2": "%s: %s"
+}
