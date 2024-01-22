@@ -7,7 +7,11 @@ import ic2.core.platform.registries.IC2Blocks;
 import ic2.core.platform.registries.IC2Items;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -15,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
 
