@@ -136,7 +136,7 @@ if (project.hasProperty('cf_id')) {
         "${forge_release_versions}".split(',').each {
             mainFile.addGameVersion("${it}")
         }
-        mainFile.addOptional("ic2-classic")
+        mainFile.addRequirement("ic2-classic")
         mainFile.addOptional("roughly-enough-items-hacks")
         mainFile.addOptional("roughly-enough-items")
         mainFile.addOptional("catalogue")
