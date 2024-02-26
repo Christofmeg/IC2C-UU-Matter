@@ -38,7 +38,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        registration.addRecipes(MassFabricatorCategory.TYPE, MassFabricatorCategory.MassFabRecipe.getMassFabRecipes());
+        registration.addRecipes(MassFabricatorCategory.TYPE, MassFabricatorCategory.MassFabricatorRecipe.getMassFabricatorRecipes());
 
         registration.addRecipes(PlasmafierCategory.TYPE,
                 List.of(new PlasmafierCategory.PlasmafierRecipe(Ingredient.of(new ItemStack(IC2Items.UUMATTER, 10)),

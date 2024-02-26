@@ -27,10 +27,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCategory.MassFabRecipe> {
+public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCategory.MassFabricatorRecipe> {
 
-    public static final RecipeType<MassFabRecipe> TYPE = new RecipeType<>(
-            new ResourceLocation("ic2cuumatter", "mass_fabricator"), MassFabRecipe.class);
+    public static final RecipeType<MassFabricatorRecipe> TYPE = new RecipeType<>(
+            new ResourceLocation("ic2cuumatter", "mass_fabricator"), MassFabricatorRecipe.class);
 
     public static final ResourceLocation slotVanilla = new ResourceLocation("jei",
             "textures/gui/slot.png");
@@ -50,7 +50,7 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
     }
 
     @Override
-    public @NotNull RecipeType<MassFabRecipe> getRecipeType() {
+    public @NotNull RecipeType<MassFabricatorRecipe> getRecipeType() {
         return TYPE;
     }
 
@@ -70,13 +70,13 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MassFabRecipe recipe, @NotNull IFocusGroup iFocusGroup) {
+    public void setRecipe(IRecipeLayoutBuilder iRecipeLayoutBuilder, MassFabricatorRecipe recipe, @NotNull IFocusGroup iFocusGroup) {
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.INPUT, 67, 42).addItemStack(recipe.getInput());
         iRecipeLayoutBuilder.addSlot(RecipeIngredientRole.OUTPUT, 67, 5).addItemStack(IC2Items.UUMATTER.getDefaultInstance());
     }
 
     @Override
-    public void draw(MassFabRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
+    public void draw(MassFabricatorRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull PoseStack stack, double mouseX, double mouseY) {
 
         slot.draw(stack, 66, 41);
         bigSlot.draw(stack, 62, 0);
@@ -107,11 +107,11 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
 
     }
 
-    public static class MassFabRecipe {
+    public static class MassFabricatorRecipe {
         ItemStack INPUT;
         int AMPLIFIER;
 
-        public MassFabRecipe(ItemStack stack, int amp) {
+        public MassFabricatorRecipe(ItemStack stack, int amp) {
             this.INPUT = stack;
             this.AMPLIFIER = amp;
         }
@@ -124,10 +124,10 @@ public class MassFabricatorCategory implements IRecipeCategory<MassFabricatorCat
             return AMPLIFIER;
         }
 
-        public static List<MassFabRecipe> getMassFabRecipes() {
-            List<MassFabRecipe> recipes = new ArrayList<>();
-            recipes.add(new MassFabRecipe(ItemStack.EMPTY, 0));
-            IC2.RECIPES.get(false).massFabricator.getAllEntries().forEach(entry -> recipes.add(new MassFabRecipe(entry.getInputs()[0].getComponents().get(0),
+        public static List<MassFabricatorRecipe> getMassFabricatorRecipes() {
+            List<MassFabricatorRecipe> recipes = new ArrayList<>();
+            recipes.add(new MassFabricatorRecipe(ItemStack.EMPTY, 0));
+            IC2.RECIPES.get(false).massFabricator.getAllEntries().forEach(entry -> recipes.add(new MassFabricatorRecipe(entry.getInputs()[0].getComponents().get(0),
                     entry.getOutput().getMetadata().getInt("Amplifier"))));
             return recipes;
         }
