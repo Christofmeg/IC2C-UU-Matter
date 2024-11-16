@@ -1,0 +1,19 @@
+repositories {
+    maven {
+        url "https://cursemaven.com"
+    }
+}
+
+dependencies {
+    implementation "curse.maven:ic2-classic-242942:5230413"
+
+    implementation "codechicken:CodeChickenLib:1.7.10-1.1.3.140:dev"
+    implementation "codechicken:CodeChickenCore:1.7.10-1.0.7.47:dev"
+    implementation "codechicken:NotEnoughItems:1.7.10-1.0.5.120:dev"
+
+/*
+    implementation "curse.maven:codechickencore-unofficial-746279:5900726"
+    implementation "curse.maven:notenoughitems-gtnh-358228:5833042"
+*/
+
+}

@@ -1,67 +1,70 @@
- buildscript {
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
+buildscript {
     repositories {
-        jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        gradlePluginPortal()
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://jitpack.io"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-    }
-}
-apply plugin: 'net.minecraftforge.gradle.forge'
-
-version = "1.12.2-1.1.3"
-group = "com.christofmeg.ic2cuumatter"
-archivesBaseName = "ic2cuumatter"
-
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' 
-
-minecraft {
-    version = "1.12.2-14.23.5.2838"
-	mappings = "stable_39"
-    runDir = "run"
-	
-    replace "@VERSION@", "1.0"
-    replaceIn "IC2CUUMatter.java"
-}
-
-repositories {
-    // JEI
-    maven {
-        // location of the maven that hosts JEI files
-        name = "Progwml6 maven"
-        url = "http://dvs1.progwml6.com/files/maven"
-    }
-    maven {
-        // location of a maven mirror for JEI files, as a fallback
-        name = "ModMaven"
-        url = "modmaven.k-4u.nl"
+        classpath('com.github.GTNewHorizons:ForgeGradle:1.2.11') {
+            // This transitive dependency breaks plugins for some reason. Only GTNH-FG has this issue.
+            exclude group: "org.eclipse.equinox"
+        }
+        classpath("net.darkhax.curseforgegradle:CurseForgeGradle:1.+")
+        classpath("com.modrinth.minotaur:Minotaur:2.+")
     }
 }
 
-dependencies {
-
-	//IC2 Classic
-	compile files("dependencies/IC2Classic-1.12-1.5.8.jar")
-
-    // JEI
-	compile files("dependencies/jei_1.12.2-4.16.1.301.jar")
+plugins {
+    id 'java-library'
 }
 
-processResources {
-    // this will ensure that this task is redone when the versions change.
-    inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+apply from: "buildscript/forge-1.7.gradle"
+//apply(plugin = "net.darkhax.curseforgegradle")
+//apply(plugin = "com.modrinth.minotaur")
 
-    // replace stuff in mcmod.info, nothing else
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
-    }
-        
-    // copy everything else except the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+/** Upload manualy to curseforge modrinth for now
+if (project.hasProperty('cf_id')) {
+    tasks.register('publishCurseForge', TaskPublishCurseForge) {
+        apiToken = file('../API Tokens/ic2cuumatter.md')
+        def projectId = "${cf_id}".toString()
+        def mainFile = upload(projectId, file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")) as Object
+        mainFile.changelogType = 'markdown'
+        mainFile.changelog = file('changelog.md')
+        mainFile.addGameVersion('Client', 'Server')
+        mainFile.releaseType = "${release_type}"
+        "${forge_release_versions}".split(',').each {
+            mainFile.addGameVersion("${it}")
+        }
+        mainFile.addRequirement("ic2-classic")
+        mainFile.addRequirement("notenoughitems-gtnh")
+        mainFile.addOptional("notenoughitems")
     }
 }
+
+
+if (project.hasProperty('modrinth_id')) {
+    modrinth {
+        token = file('../API Tokens/modrinth.md').text
+        projectId = "${modrinth_id}"
+        versionName = getArchivesBaseName() + "-" + getVersion()
+        versionType = "${release_type}"
+        changelog = file('changelog.md').text
+        uploadFile = file("${project.buildDir}/libs/${archivesBaseName}-${version}.jar")
+        gameVersions = "${forge_release_versions}".split(",") as List<String>
+        dependencies {
+            required.project "notenoughitems-unofficial"
+        }
+    }
+}
+ */

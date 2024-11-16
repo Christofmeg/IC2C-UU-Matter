@@ -1,29 +1,36 @@
-# eclipse
-bin
-*.launch
-.settings
-.metadata
-.classpath
-.project
+# mac os
+.DS_Store
 
-# idea
-out
-*.ipr
-*.iws
-*.iml
-.idea
-
-# gradle
-build
+# forge / gradle
 .gradle
-
-# other
-eclipse
-run
-/.apt_generated/
-/main/
-/test/
+build/
+out/
+classes/
+run/
 .factorypath
 
-# Files from Forge MDK
-forge*changelog.txt
+# eclipse 
+*.launch
+.settings
+.classpath
+.project
+.metadata
+eclipse
+*.launch
+
+# idea
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# vscode
+.settings/
+.vscode/
+bin/
+.classpath
+
+# other
+bin/
+jars/
+/.nb-gradle/
